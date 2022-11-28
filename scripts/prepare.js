@@ -19,22 +19,20 @@ require('dotenv').config({
   path: 'scripts/.env',
 });
 const argv = yargs(hideBin(process.argv)).argv;
-
+const DateValidator = require('./DateValidator');
 
 async function main() {
+  let date;
+  const dateValidator = new DateValidator();
   if (argv.date) {
-    validateDate(argv.date);
+    date = new Date(argv.date);
   } else {
-
+    date = new Date();
   }
-}
 
-function validateDate(dateString) {
-  const date = new Date(dateString);
-  const month = date.getMonth();
-  const day = date.getDate();
-  if (month !== 11) {
-
+  const validationResult = dateValidator.validate(date);
+  if (!validationResult.pass) {
+    throw new Error(validationResult.message);
   }
 }
 
