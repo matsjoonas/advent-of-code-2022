@@ -29,6 +29,7 @@
     "chalk": "^5.1.2",
     "colors": "^1.4.0",
     "dotenv": "^16.0.3",
+    "generate-template-files": "^3.2.1",
     "got": "^12.5.3",
     "jest": "^29.3.1",
     "lodash": "^4.17.21",
