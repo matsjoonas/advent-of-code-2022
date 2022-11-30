@@ -8,6 +8,5 @@ const dataSets = [
   },
 ]
 
-describe("Day01Part1", () => {
-  dayTest(new Day01Part1(), dataSets);
-});
+dayTest(new Day01Part1(), dataSets);
+
