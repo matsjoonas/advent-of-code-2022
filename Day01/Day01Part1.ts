@@ -1,5 +1,7 @@
-export default class Day01Part1 {
-  public solve(rawInput: string): number {
-    return 100;
+import Day from "../Day";
+
+export default class Day01Part1 implements Day {
+  public solve(rawInput: string): string {
+    return rawInput;
   }
 }

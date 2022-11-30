@@ -1,27 +1,31 @@
 import * as fs from 'fs';
 import 'colors';
-import path from "path";
+import Day from "./Day";
 
 class AocSuite {
-  public solver: (data: string | Buffer) => string;
-  private readonly inputPath: string;
+  private readonly solvers: Day[][];
 
-  constructor(config: any) {
-    this.solver = config.solver;
-    if (config.inputPath.charAt(0) !== '.') {
-      this.inputPath = __dirname + '/' + config.inputPath;
-    } else {
-      this.inputPath = config.inputPath;
-    }
+  constructor(solvers: Day[][]) {
+    this.solvers = solvers;
   }
 
-  solve(log: boolean = false): number | string {
-    const data = fs.readFileSync(this.inputPath);
-    let startStamp = 0;
-    let endStamp = 0;
+  private getInputPath(day: number): string {
+    let dayId: string = day.toString();
+    if (dayId.length === 1) {
+      dayId = '0' + dayId;
+    }
+    return `./Day${dayId}/input${dayId}.txt`;
+  }
+
+  public solve(day: number, part: number = 1, log: boolean = false): number | string {
+    const data = fs.readFileSync(this.getInputPath(day));
+    const solver = this.solvers[day - 1][part - 1];
+    let startStamp: number = 0;
+    let endStamp: number = 0;
     startStamp = Date.now();
-    const answer = this.solver(data);
+    const answer = solver.solve(data.toString());
     endStamp = Date.now();
+
     if (log) {
       console.log('__________________________________'.blue);
       console.log('The answer is: ')

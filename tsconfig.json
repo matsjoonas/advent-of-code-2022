@@ -15,7 +15,8 @@
     "moduleResolution": "node",
     "types": [
       "node",
-      "jest"
+      "jest",
+      "yargs",
     ]
   }
 }
