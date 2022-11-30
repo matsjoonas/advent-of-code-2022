@@ -1,5 +1,5 @@
 import dayTest from "../../dayTest";
-import Day01Part1 from "../Day01Part1";
+import Day01Part2 from "../Day01Part2";
 
 const dataSets = [
   {
@@ -8,5 +8,5 @@ const dataSets = [
   },
 ]
 
-dayTest(new Day01Part1(), dataSets);
+dayTest(new Day01Part2(), dataSets);
 

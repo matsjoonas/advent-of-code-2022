@@ -1,21 +1,17 @@
-import yargs from 'yargs';
-import got from 'got';
-import {hideBin} from "yargs/helpers";
-import * as dotenv from 'dotenv';
-import chalk from 'chalk';
-import path from 'path';
-import * as url from 'url';
-import {generateTemplateFilesBatch} from 'generate-template-files';
-
-dotenv.config({
-  path: 'scripts/.env',
-})
-import DateValidator from './DateValidator.js';
-import fs from 'fs';
-
+// @ts-nocheck
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
 const argv = yargs(hideBin(process.argv)).argv;
-const inform = (message) => console.log(chalk.cyan(message));
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+const path = require('path');
+const fs = require('fs');
+const {generateTemplateFilesBatch} = require('generate-template-files');
+
+require('dotenv').config({
+  path: 'scripts/.env',
+});
+const DateValidator = require('./DateValidator.js');
+
+const inform = (message) => console.log(message);
 
 function createGetPath(dayFolderName) {
   function getPath(subPath) {

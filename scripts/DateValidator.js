@@ -1,6 +1,7 @@
+// @ts-nocheck
 'use strict';
 
-export default class DateValidator {
+class DateValidator {
   isValidMonth(month) {
     return month === 11;
   }
@@ -42,3 +43,5 @@ export default class DateValidator {
     return validationResult;
   }
 }
+
+module.exports = DateValidator;
