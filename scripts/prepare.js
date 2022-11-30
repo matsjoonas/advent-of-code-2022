@@ -55,10 +55,12 @@ async function main() {
 
   inform('\nCreating day root folder');
   fs.mkdirSync(getPath());
-  inform('\nCreating tests folder');
-  fs.mkdirSync(getPath('tests'));
   inform('\nCreating input file');
   fs.writeFileSync(getPath(`input${dayString}.txt`), '')
+  inform('\nCreating tests folder');
+  fs.mkdirSync(getPath('tests'));
+  inform('\nCreating test input file');
+  fs.writeFileSync(getPath(`tests/day${dayString}TestInput1.txt`), '')
 }
 
 main().catch((err) => {
