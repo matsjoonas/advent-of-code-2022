@@ -1,25 +1,12 @@
-/*
-.env
-  year=2022
-
-take year from env
-check date
-if dates year matches from 1-24 days
-if no match ask to manually enter the date yyyy-mm-dd
-
-check if folder exists for the date
-if no folder
-part 1
-else part 2
-prefill date and folder, and ask to confirm
- */
-const yargs = require('yargs/yargs');
-const {hideBin} = require('yargs/helpers')
-require('dotenv').config({
+import yargs from 'yargs';
+import got from 'got';
+import {hideBin} from "yargs/helpers";
+import * as dotenv from 'dotenv'
+dotenv.config({
   path: 'scripts/.env',
-});
+})
+import DateValidator from './DateValidator.js';
 const argv = yargs(hideBin(process.argv)).argv;
-const DateValidator = require('./DateValidator');
 
 async function main() {
   let date;

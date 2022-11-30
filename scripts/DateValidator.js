@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = class DateValidator {
+export default class DateValidator {
   isValidMonth(month) {
     return month === 11;
   }
