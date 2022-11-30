@@ -52,7 +52,7 @@ const generateDayTest = (dayTestName, dayClassName, day, dayFolderName) => {
   return generateTemplateFilesBatch([
     {
       option: 'Day Class',
-      defaultCase: '(pascalCase)',
+      defaultCase: '(camelCase)',
       entry: {
         folderPath: './scripts/templates/__daytestname__.test.ts',
       },
@@ -63,7 +63,7 @@ const generateDayTest = (dayTestName, dayClassName, day, dayFolderName) => {
       ],
       output: {
         path: `./${dayFolderName}/tests/__daytestname__.test.ts`,
-        pathAndFileNameDefaultCase: '(pascalCase)',
+        pathAndFileNameDefaultCase: '(camelCase)',
       },
     },
   ]);
