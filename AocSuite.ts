@@ -14,7 +14,7 @@ class AocSuite {
     if (dayId.length === 1) {
       dayId = '0' + dayId;
     }
-    return `./Day${dayId}/input${dayId}.txt`;
+    return `./day${dayId}/input${dayId}.txt`;
   }
 
   public solve(day: number, part: number = 1, log: boolean = false): number | string {

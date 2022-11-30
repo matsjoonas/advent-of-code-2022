@@ -21,6 +21,8 @@ async function main() {
   if (!validationResult.pass) {
     throw new Error(validationResult.message);
   }
+
+
 }
 
 main().catch((err) => {

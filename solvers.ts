@@ -1,6 +1,6 @@
 import Day from "./Day";
-import Day01Part1 from "./Day01/Day01Part1";
-import Day01Part2 from "./Day01/Day01Part2";
+import Day01Part1 from "./day01/Day01Part1";
+import Day01Part2 from "./day01/Day01Part2";
 
 const solvers: Day[][] = [
   [
