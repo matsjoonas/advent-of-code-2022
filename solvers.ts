@@ -8,6 +8,8 @@ const solvers: Day[][] = [
   [
     new Day01Part1(),
     new Day01Part2(),
+  ],
+  [
     new Day02Part1(),
     new Day02Part2(),
   ]
