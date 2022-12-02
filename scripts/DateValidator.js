@@ -34,12 +34,6 @@ class DateValidator {
 
     const currentDate = new Date();
 
-    if (userProvidedDate > currentDate) {
-      validationResult.pass = false;
-      validationResult.message = 'Date can not be in the future.';
-      return validationResult;
-    }
-
     return validationResult;
   }
 }
