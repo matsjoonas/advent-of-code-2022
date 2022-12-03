@@ -5,29 +5,38 @@ function priority(char: string) {
   return priorities.indexOf(char) + 1;
 }
 
-function commonItem(bag: string) {
-  const middleIndex = bag.length / 2;
-  const compartments = [bag.substring(0, middleIndex), bag.substring(middleIndex)];
-  let commonChar = null;
-  compartments[0].split('').every(char => {
-    const idx = compartments[1].indexOf(char);
+function getCommonItems(a: string, b: string) {
+  let commonChars = '';
+  a.split('').every(char => {
+    const idx = b.indexOf(char);
     if (idx !== -1) {
-      commonChar = char;
+      commonChars += char;
+    }
+    return true;
+  });
+
+  b.split('').every(char => {
+    const idx = a.indexOf(char);
+    if (idx !== -1) {
+      commonChars += char;
       return false;
     }
     return true;
   });
 
-  compartments[1].split('').every(char => {
-    const idx = compartments[0].indexOf(char);
-    if (idx !== -1) {
-      commonChar = char;
-      return false;
+  return [...new Set(commonChars.split(''))].join();
+}
+
+function commonBetweenArrays(group: string[]) {
+  let commonItems = '';
+  group.forEach(line => {
+    if (!commonItems) {
+      commonItems = line;
     }
-    return true;
+    commonItems = getCommonItems(line, commonItems);
   });
 
-  return commonChar || '';
+  return commonItems;
 }
 
 export default class Day03Part2 implements Day {
@@ -35,9 +44,24 @@ export default class Day03Part2 implements Day {
     const input = rawInput.trim()
       .split('\r\n');
 
+    const groups: string[][] = [];
+    let groupIndex = 0;
+    input.forEach((line, index) => {
+      const limit = (index + 1) % 3;
+
+      if (!groups[groupIndex]) {
+        groups[groupIndex] = [];
+      }
+      groups[groupIndex].push(line);
+
+      if (limit === 0) {
+        groupIndex++;
+      }
+    });
+
     let prioritiesSum = 0;
-    input.forEach(bag => {
-      prioritiesSum += priority(commonItem(bag));
+    groups.forEach(group => {
+      prioritiesSum += priority(commonBetweenArrays(group));
     });
 
     return prioritiesSum;
