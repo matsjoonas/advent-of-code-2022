@@ -1,43 +1,6 @@
 import Day from "../Day";
-
-function priority(char: string) {
-  const priorities = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  return priorities.indexOf(char) + 1;
-}
-
-function getCommonItems(a: string, b: string) {
-  let commonChars = '';
-  a.split('').every(char => {
-    const idx = b.indexOf(char);
-    if (idx !== -1) {
-      commonChars += char;
-    }
-    return true;
-  });
-
-  b.split('').every(char => {
-    const idx = a.indexOf(char);
-    if (idx !== -1) {
-      commonChars += char;
-      return false;
-    }
-    return true;
-  });
-
-  return [...new Set(commonChars.split(''))].join();
-}
-
-function commonBetweenArrays(group: string[]) {
-  let commonItems = '';
-  group.forEach(line => {
-    if (!commonItems) {
-      commonItems = line;
-    }
-    commonItems = getCommonItems(line, commonItems);
-  });
-
-  return commonItems;
-}
+import priority from "./priority";
+import intersectionOfStrings from "./intersectionOfStrings";
 
 export default class Day03Part2 implements Day {
   public solve(rawInput: string): number {
@@ -61,7 +24,7 @@ export default class Day03Part2 implements Day {
 
     let prioritiesSum = 0;
     groups.forEach(group => {
-      prioritiesSum += priority(commonBetweenArrays(group));
+      prioritiesSum += priority(group.reduce(intersectionOfStrings));
     });
 
     return prioritiesSum;
