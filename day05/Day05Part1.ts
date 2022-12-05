@@ -5,17 +5,29 @@ export default class Day05Part1 implements Day {
     const input = rawInput.split('\r\n\r\n');
 
     const rawCrates = input[0].split('\r\n');
-    rawCrates.pop();
-    const crates: string[][] = [];
-    for (let i = 0; i < rawCrates.length; i++) {
-      const cratesArr = rawCrates[i]
-        .split('] [').join('')
-        .split(']').join('')
-        .split('[').join('')
-        .split('    ').join(' ')
-        .split('');
+    const header = rawCrates.pop() || '';
+    const headerArr = header.split('');
+    const indices: number[] = [];
+    headerArr.forEach((col, i) => {
+      if (col !== ' ') {
+        indices.push(Number(i));
+      }
+    });
 
-      cratesArr.forEach((command, s) => {
+
+    const crates: string[][] = [];
+    const parsedCrates: string[][] = [];
+    for (let i = 0; i < rawCrates.length; i++) {
+      const cratesArr = rawCrates[i].split('');
+
+      if (!parsedCrates[i]) {
+        parsedCrates[i] = [];
+      }
+      indices.forEach(idx => {
+        parsedCrates[i].push(cratesArr[idx] || ' ');
+      });
+
+      parsedCrates[i].forEach((command, s) => {
         if (!crates[s]) {
           crates[s] = [];
         }
@@ -30,8 +42,6 @@ export default class Day05Part1 implements Day {
         return arr;
       });
 
-    console.log(commands);
-
     commands.forEach(command => {
       for (let i = 0; i < command[0]; i++) {
         const toMove = crates[command[1] - 1].shift() || '';
@@ -42,9 +52,7 @@ export default class Day05Part1 implements Day {
       }
     });
 
-    const finalCrates = crates.map(crateLine => crateLine.join(' ').trim());
-    console.log(finalCrates);
-
+    const finalCrates = crates.map(crateLine => crateLine.join(' '));
     return finalCrates.reduce((acc, col) => acc + col[0], '');
   }
 }
