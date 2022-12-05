@@ -6,7 +6,7 @@ const theirWin = [3, 1, 2];
 export default class Day02Part2 implements Day {
   public solve(rawInput: string): number {
     const input = rawInput.trim()
-      .split('\r\n')
+      .split(/\r\n|\n/)
       .map(item => {
         return item.split(' ')
           .map(value => {

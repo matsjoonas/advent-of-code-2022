@@ -3,7 +3,7 @@ import Day from "../Day";
 export default class Day02Part1 implements Day {
   public solve(rawInput: string): number {
     const input = rawInput.trim()
-      .split('\r\n')
+      .split(/\r\n|\n/)
       .map(item => {
         return item.split(' ')
           .map(value => {
