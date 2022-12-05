@@ -3,17 +3,15 @@ import Day from "../Day";
 export default class Day05Part1 implements Day {
   public solve(rawInput: string): string {
     const input = rawInput.split('\r\n\r\n');
-
     const rawCrates = input[0].split('\r\n');
     const header = rawCrates.pop() || '';
     const headerArr = header.split('');
-    const indices: number[] = [];
+    const colIndices: number[] = [];
     headerArr.forEach((col, i) => {
       if (col !== ' ') {
-        indices.push(Number(i));
+        colIndices.push(Number(i));
       }
     });
-
 
     const crates: string[][] = [];
     const parsedCrates: string[][] = [];
@@ -23,7 +21,7 @@ export default class Day05Part1 implements Day {
       if (!parsedCrates[i]) {
         parsedCrates[i] = [];
       }
-      indices.forEach(idx => {
+      colIndices.forEach(idx => {
         parsedCrates[i].push(cratesArr[idx] || ' ');
       });
 
