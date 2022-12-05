@@ -7,6 +7,8 @@ import Day03Part1 from "./day03/Day03Part1";
 import Day03Part2 from "./day03/Day03Part2";
 import Day04Part1 from "./day04/Day04Part1";
 import Day04Part2 from "./day04/Day04Part2";
+import Day05Part1 from "./day05/Day05Part1";
+import Day05Part2 from "./day05/Day05Part2";
 
 const solvers: Day[][] = [
   [
@@ -24,7 +26,11 @@ const solvers: Day[][] = [
   [
     new Day04Part1(),
     new Day04Part2(),
-  ]
+  ],
+  [
+    new Day05Part1(),
+    new Day05Part2(),
+  ],
 ];
 
 export default solvers;
