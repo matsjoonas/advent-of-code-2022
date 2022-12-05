@@ -5,7 +5,7 @@ import intersectionOfStrings from "./intersectionOfStrings";
 export default class Day03Part2 implements Day {
   public solve(rawInput: string): number {
     const input = rawInput.trim()
-      .split('\r\n');
+      .split(/\r\n|\n/);
 
     const groups: string[][] = [];
     let groupIndex = 0;

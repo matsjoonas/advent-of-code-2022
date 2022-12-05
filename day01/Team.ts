@@ -7,9 +7,9 @@ export default class Team {
 
   private parseCalories(rawInput: string): Float64Array {
     const input = rawInput.trim()
-      .split('\r\n\r\n')
+      .split(/\r\n\r\n|\n\n/)
       .map(group =>
-        group.split('\r\n')
+        group.split(/\r\n|\n/)
           .reduce((acc, curr) => acc + parseInt(curr), 0)
       );
 

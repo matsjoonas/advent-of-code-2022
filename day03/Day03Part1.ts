@@ -10,7 +10,7 @@ function commonItem(bag: string) {
 export default class Day03Part1 implements Day {
   public solve(rawInput: string): number {
     const input = rawInput.trim()
-      .split('\r\n');
+      .split(/\r\n|\n/);
 
     let prioritiesSum = 0;
     input.forEach(bag => {
