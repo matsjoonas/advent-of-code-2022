@@ -21,8 +21,6 @@ export default class Day07Part1 implements Day {
           contents = input.slice(curI + 1, curI + endI + 1);
         }
 
-        console.log(contents);
-
         let currentDirSize = 0;
         contents.forEach(line => {
           if (!line.includes('dir')) {
@@ -31,11 +29,12 @@ export default class Day07Part1 implements Day {
         });
 
         // add to dirsizes here
-        path.forEach(dirName => {
-          if (!dirSizes.get(dirName)) {
-            dirSizes.set(dirName, 0);
+        path.forEach((dirName, idx) => {
+          const key = path.slice(0, idx + 1).join('');
+          if (!dirSizes.get(key)) {
+            dirSizes.set(key, 0);
           }
-          dirSizes.set(dirName, dirSizes.get(dirName) + currentDirSize);
+          dirSizes.set(key, dirSizes.get(key) + currentDirSize);
         });
       }
 
