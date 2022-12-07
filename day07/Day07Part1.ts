@@ -9,7 +9,6 @@ export default class Day07Part1 implements Day {
 
     input.forEach((line, curI) => {
       if (line === '$ ls') {
-        console.log(path);
         let endI = input.slice(curI + 1).findIndex(value => {
           return value.includes('$');
         });
