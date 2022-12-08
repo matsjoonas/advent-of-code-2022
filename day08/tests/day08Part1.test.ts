@@ -4,7 +4,7 @@ import Day08Part1 from "../Day08Part1";
 const dataSets = [
   {
     inputPath: './day08/tests/day08TestInput1.txt',
-    expectedResult: '',
+    expectedResult: 21,
   },
 ]
 
