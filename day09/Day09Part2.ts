@@ -1,5 +1,40 @@
 import Day from "../Day";
 
+function renderLinksFrame(links: number[][]) {
+  let lowestX = 0;
+  let lowestY = 0;
+  let yMod = 0;
+  let xMod = 0;
+  links.forEach(link => {
+    if (link[0] < lowestX) {
+      lowestX = link[0];
+    }
+    if (link[1] < lowestY) {
+      lowestY = link[1];
+    }
+  });
+  if (lowestY < 0) {
+    yMod = Math.abs(lowestY);
+  }
+  if (lowestX < 0) {
+    xMod = Math.abs(lowestX);
+  }
+
+  const newLinks = links.map(link => [link[0] + xMod, link[1] + yMod]);
+
+  let frameLine = '..................';
+  const frame: string[][] = [];
+  for (let i = 0; i < 6; i++) {
+    frame.push(frameLine.split(''));
+  }
+
+  newLinks.forEach((link, index) => {
+    frame[link[1]][link[0]] = String(index);
+  });
+
+  console.log(frame.map(line => line.join('')));
+}
+
 function getLinkPosition(sHead: number[], sTail: number[]): number[] {
   let head = [...sHead];
   let tail = [...sTail];
@@ -18,12 +53,24 @@ function getLinkPosition(sHead: number[], sTail: number[]): number[] {
   }
 
   // realign the tail
-  if (sTail[1] !== tail[1]) {
+  if (sTail[1] !== tail[1] && sTail[0] !== tail[0]) {
+    // no realignment needed
+  } else if (sTail[1] !== tail[1]) {
     // tail moved on y
-    tail[0] = head[0];
+    const tailOffsetX = head[0] - tail[0];
+    if (tailOffsetX >= 1) {
+      tail[0]++;
+    } else if (tailOffsetX <= -1) {
+      tail[0]--;
+    }
   } else if (sTail[0] !== tail[0]) {
     // tail moved on x
-    tail[1] = head[1];
+    const tailOffsetY = head[1] - tail[1];
+    if (tailOffsetY >= 1) {
+      tail[1]++;
+    } else if (tailOffsetY <= -1) {
+      tail[1]--;
+    }
   }
 
   return tail;
@@ -51,7 +98,7 @@ function move(links: number[][], command: string[], tailPositions: number[][]) {
         tailPositions.push(newLinkPosition);
       }
     }
-    console.log(links);
+    //renderLinksFrame(links);
   }
 
   return links;

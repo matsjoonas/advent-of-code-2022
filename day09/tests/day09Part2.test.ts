@@ -7,6 +7,10 @@ const dataSets = [
     expectedResult: 1,
   },
   {
+    inputPath: './day09/tests/day09TestInput2.txt',
+    expectedResult: 2630,
+  },
+  {
     inputPath: './day09/tests/day09TestInput3.txt',
     expectedResult: 36,
   },
