@@ -5,6 +5,7 @@ function getLinkPosition(sHead: number[], sTail: number[]): number[] {
   let tail = [...sTail];
   const deltaX = sHead[0] - sTail[0];
   const deltaY = sHead[1] - sTail[1];
+
   if (deltaX > 1) {
     tail[0]++;
   } else if (deltaX < -1) {
@@ -45,10 +46,12 @@ function move(links: number[][], command: string[], tailPositions: number[][]) {
     for (let linkIndex = 1; linkIndex < links.length; linkIndex++) {
       const newLinkPosition = getLinkPosition(links[linkIndex - 1], links[linkIndex]);
       links[linkIndex] = newLinkPosition;
+
       if (linkIndex === links.length - 1) {
         tailPositions.push(newLinkPosition);
       }
     }
+    console.log(links);
   }
 
   return links;
@@ -64,15 +67,12 @@ export default class Day09Part2 implements Day {
     }
 
     const tailPositions: number[][] = [];
-
     for (let i = 0; i < input.length; i++) {
       links = [...move(links, input[i].split(' '), tailPositions)];
     }
 
     const allPositions = tailPositions.map(pos => pos.join(','));
-    console.log(allPositions);
     const uniquePositions = [...new Set(allPositions)];
-    console.log(uniquePositions);
     return uniquePositions.length;
   }
 }
