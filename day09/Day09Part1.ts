@@ -64,9 +64,7 @@ export default class Day09Part1 implements Day {
     }
 
     const allPositions = tailPositions.map(pos => pos.join(','));
-    console.log(allPositions);
     const uniquePositions = [...new Set(allPositions)];
-    console.log(uniquePositions);
     return uniquePositions.length;
   }
 }
