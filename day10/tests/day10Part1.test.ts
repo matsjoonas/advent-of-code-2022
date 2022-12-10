@@ -3,8 +3,8 @@ import Day10Part1 from "../Day10Part1";
 
 const dataSets = [
   {
-    inputPath: './day10/tests/day10TestInput1.txt',
-    expectedResult: '',
+    inputPath: './day10/tests/day10TestInput2.txt',
+    expectedResult: 12640,
   },
 ]
 

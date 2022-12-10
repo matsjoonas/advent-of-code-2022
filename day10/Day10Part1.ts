@@ -1,12 +1,5 @@
 import Day from "../Day";
 
-/*
-For now, consider the signal strength
-(the cycle number multiplied by the value of the X register)
-during the 20th cycle and every 40 cycles after that
-(that is, during the 20th, 60th, 100th, 140th, 180th, and 220th cycles).
- */
-
 function maybeSignalStrength(cycle: number, register: number, signalStrengths: number[]) {
   if (cycle === 20 || ((cycle + 20) % 40 === 0)) {
     signalStrengths.push(cycle * register);
