@@ -6,6 +6,7 @@ interface Monkey {
   testDivBy: number;
   trueTo: number,
   falseTo: number,
+  inspectionCount: number,
 }
 
 function getOp(instruction: string[]) {
@@ -35,13 +36,32 @@ export default class Day11Part1 implements Day {
           testDivBy: Number(content[2].replace('Test: divisible by ', '')),
           trueTo: Number(content[3].replace('If true: throw to monkey ', '')),
           falseTo: Number(content[4].replace('If false: throw to monkey ', '')),
+          inspectionCount: 0,
         };
+        monkies.push(monkey);
       }
     });
 
-    console.log(monkies);
+    for (let round = 0; round < 20; round++) {
+      monkies.forEach(thisMonkey => {
+        thisMonkey.items.forEach(item => {
+          thisMonkey.inspectionCount += 1;
+          const moddedItem = Math.floor(thisMonkey.op(item) / 3);
+          if (moddedItem % thisMonkey.testDivBy === 0) {
+            monkies[thisMonkey.trueTo].items.push(moddedItem);
+          } else {
+            monkies[thisMonkey.falseTo].items.push(moddedItem);
+          }
+        });
+        // set items to empty when monkey has supposedly thrown them all
+        thisMonkey.items = [];
+      });
+    }
 
+    const result = monkies
+      .sort((a, b) => b.inspectionCount - a.inspectionCount)
+      .slice(0, 2);
 
-    return 0;
+    return result.reduce((acc, cur) => acc * cur.inspectionCount, 1);
   }
 }
