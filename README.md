@@ -1,7 +1,7 @@
 # Advent of Code 2022 solutions in typescript
 To create folders and files for a day, run:
 
-`node scripts/prepare.js --date=2021-12-01`
+`node scripts/prepare.js --date=2022-12-01`
 
 or if you wish to use current date, then:
 
