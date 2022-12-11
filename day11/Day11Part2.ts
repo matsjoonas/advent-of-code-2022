@@ -42,11 +42,13 @@ export default class Day11Part2 implements Day {
       }
     });
 
+    const product = monkies.reduce((acc, cur) => acc * cur.testDivBy, 1);
+
     for (let round = 0; round < 10000; round++) {
       monkies.forEach(thisMonkey => {
         thisMonkey.items.forEach(item => {
           thisMonkey.inspectionCount += 1;
-          const moddedItem = Math.floor(thisMonkey.op(item));
+          const moddedItem = thisMonkey.op(item) % product;
           if (moddedItem % thisMonkey.testDivBy === 0) {
             monkies[thisMonkey.trueTo].items.push(moddedItem);
           } else {
