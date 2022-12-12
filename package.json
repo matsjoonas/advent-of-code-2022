@@ -32,9 +32,13 @@
     "got": "^12.5.3",
     "jest": "^29.3.1",
     "lodash": "^4.17.21",
+    "node-dijkstra": "^2.5.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "@types/node-dijkstra": "^2.5.3"
   }
 }
