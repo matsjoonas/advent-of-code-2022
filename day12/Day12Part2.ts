@@ -24,6 +24,7 @@ export default class Day12Part2 implements Day {
 
     // generate a map of nodes
     const nodes: any = {};
+    const startingNodes = ['S'];
     for (let r = 0; r < input.length; r++) {
       for (let c = 0; c < input[r].length; c++) {
         let thisKey = getKey([r,c]);
@@ -43,6 +44,9 @@ export default class Day12Part2 implements Day {
           }
           const height = getHeight(input[coords[0]][coords[1]]);
           let neighbourKey = getKey(coords);
+          if (height === 1) {
+            startingNodes.push(neighbourKey);
+          }
           if (input[coords[0]][coords[1]] === 'E' || input[coords[0]][coords[1]] === 'S') {
             neighbourKey = input[coords[0]][coords[1]];
           }
@@ -56,6 +60,16 @@ export default class Day12Part2 implements Day {
     const route = new Graph(nodes);
 
     // @ts-ignore
-    return route.path('S', 'E').length - 1;
+    const routeLengths = [];
+    startingNodes.forEach(start => {
+      const path = route.path(start, 'E');
+      if (path) {
+        // @ts-ignore
+        routeLengths.push(path.length - 1);
+      }
+    });
+
+    // @ts-ignore
+    return routeLengths.sort((a, b) => a - b)[0];
   }
 }
