@@ -1,14 +1,6 @@
 import Day from "../Day";
 
 function compare(left: any, right: any): boolean | undefined {
-
-  console.log('------- COMPARE --------');
-  console.log('--left--')
-  console.log(left);
-  console.log('--right--')
-  console.log(right);
-
-
   // undefined result
   if (left === undefined && right === undefined) {
     return undefined;
