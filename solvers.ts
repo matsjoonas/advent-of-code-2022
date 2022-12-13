@@ -25,6 +25,8 @@ import Day12Part1 from "./day12/Day12Part1";
 import Day12Part2 from "./day12/Day12Part2";
 import Day13Part1 from "./day13/Day13Part1";
 import Day13Part2 from "./day13/Day13Part2";
+import Day14Part1 from "./day14/Day14Part1";
+import Day14Part2 from "./day14/Day14Part2";
 
 const solvers: Day[][] = [
   [
@@ -78,6 +80,10 @@ const solvers: Day[][] = [
   [
     new Day13Part1(),
     new Day13Part2(),
+  ],
+  [
+    new Day14Part1(),
+    new Day14Part2(),
   ],
 ];
 
