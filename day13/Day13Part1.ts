@@ -65,7 +65,6 @@ export default class Day13Part1 implements Day {
 
 
     const allResults = pairs.map(pair => compare(pair[0], pair[1]));
-    console.log(allResults);
     const finalResult = allResults.reduce((acc, result, index) => {
         if (result) {
           return acc + index + 1;
