@@ -73,7 +73,6 @@ export default class Day15Part2 implements Day {
       }
     }
 
-    console.log(distressBeacon);
     return distressBeacon[0] * 4000000 + distressBeacon[1];
   }
 }
