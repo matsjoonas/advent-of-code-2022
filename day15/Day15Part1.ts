@@ -14,30 +14,8 @@ export default class Day15Part1 implements Day {
         .map(item => item.split(', ').map(Number));
     });
 
-    // get the grid size
-    const gridLeftCorner = [0, 0];
-    const gridRightCorner = [0, 0];
-    input.forEach(sensorBeacon => {
-      sensorBeacon.forEach(node => {
-        if (node[0] < gridLeftCorner[0]) {
-          gridLeftCorner[0] = node[0];
-        }
-        if (node[1] < gridLeftCorner[1]) {
-          gridLeftCorner[1] = node[1];
-        }
-
-        if (node[0] > gridRightCorner[0]) {
-          gridRightCorner[0] = node[0];
-        }
-
-        if (node[1] > gridRightCorner[1]) {
-          gridRightCorner[1] = node[1];
-        }
-      });
-    });
-
     const slices: number[][] = [];
-    const YRow = 10;
+    const YRow = 2000000;
     input.forEach(sensorBeacon => {
       const sensor = sensorBeacon[0];
       const sensorRange = taxiDistance(sensor, sensorBeacon[1]);
@@ -50,8 +28,16 @@ export default class Day15Part1 implements Day {
       slices.push(slice);
     });
 
-    console.log(slices);
+    const XValues = new Set();
 
-    return 0;
+    slices.forEach(slice => {
+      const workingSlice = [...slice];
+      while (workingSlice[0] !== workingSlice[1]) {
+        XValues.add(workingSlice[0]);
+        workingSlice[0] = workingSlice[0] + 1;
+      }
+    });
+
+    return XValues.size;
   }
 }
