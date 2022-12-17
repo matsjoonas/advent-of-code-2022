@@ -1,5 +1,6 @@
 export default class ShapeGenerator {
   private counter = 0;
+  private lastShapeIndex = 0;
 
   private shapes = [
     [
@@ -21,10 +22,15 @@ export default class ShapeGenerator {
 
   public emit() {
     const shape = this.shapes[this.counter];
+    this.lastShapeIndex = this.counter;
     this.counter++;
     if (this.counter > 4) {
       this.counter = 0;
     }
     return shape;
+  }
+
+  public getLastShapeIndex() {
+    return this.lastShapeIndex;
   }
 }

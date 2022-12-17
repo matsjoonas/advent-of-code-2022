@@ -2,9 +2,12 @@ import Day from "../Day";
 import ShapeGenerator from "./ShapeGenerator";
 import collides from "./collides";
 import translateShape from "./translateShape";
-import shapeToString from "./shapeToString";
 import shapeToMap from "./shapeToMap";
 import renderShape from "./renderShape";
+
+function sum(a: number, b: number) {
+  return a + b;
+}
 
 export default class Day17Part2 implements Day {
   public solve(rawInput: string): number {
@@ -13,11 +16,17 @@ export default class Day17Part2 implements Day {
     let floorShape = shapeToMap([
       [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0]
     ]);
+    const heightDeltas: number[] = [];
     let highestY = 0;
     const rockGenerator = new ShapeGenerator();
     let jetCounter = 0;
-    let i = 2022;
-    while(i--) {
+    let cycleLength = 0;
+    let sumOfHeightsPerCycle = 0;
+    let sumOfHeightsBeforeCycle = 0;
+    let cyclePattern: number[] = [];
+    let cycleStartIndex = 0;
+    let iteration = 0;
+    while(cycleLength === 0) {
       let rock = translateShape(rockGenerator.emit(), 2, highestY + 4);
       while (true) {
         const jet = jetPattern[jetCounter % jetPattern.length];
@@ -41,17 +50,35 @@ export default class Day17Part2 implements Day {
         rock = yMovedRock;
       }
 
-      floorShape = new Map([...floorShape, ...shapeToMap(rock)]);
-      const rockHighestY = rock.sort((a, b) => b[1] - a[1])[0][1];
-      highestY = highestY > rockHighestY ? highestY : rockHighestY;
-      // find the new floor
+      let floorShapeArray = [...floorShape, ...shapeToMap(rock)];
 
-      /*
-      renderShape(floorShape);
-      console.log('                 ');
-      */
+      floorShape = new Map([...floorShapeArray]);
+      const rockHighestY = rock.sort((a, b) => b[1] - a[1])[0][1];
+      const newHighestY = highestY > rockHighestY ? highestY : rockHighestY;
+      heightDeltas.push(newHighestY - highestY);
+
+      if (heightDeltas.length > 60) {
+        const substring = heightDeltas.slice(heightDeltas.length - 30).join('');
+        cycleStartIndex = heightDeltas.slice(0, heightDeltas.length - 30).join('').indexOf(substring);
+        if (cycleStartIndex !== -1 && !cycleLength) {
+          cycleLength = heightDeltas.length - cycleStartIndex - 30;
+          sumOfHeightsBeforeCycle = heightDeltas
+            .slice(0, cycleStartIndex)
+            .reduce(sum, 0);
+          cyclePattern = heightDeltas.slice(cycleStartIndex, cycleStartIndex + cycleLength);
+          sumOfHeightsPerCycle = cyclePattern.reduce(sum, 0);
+        }
+      }
+      highestY = newHighestY;
+      iteration++;
     }
 
-    return highestY;
+    const rounds = 1000000000000;
+    const noOfCycles = Math.floor((rounds - cycleStartIndex) / cycleLength);
+    const leftOverRounds = rounds - cycleStartIndex - (noOfCycles * cycleLength);
+    const leftOverSum = cyclePattern.slice(0, leftOverRounds).reduce(sum, 0);
+
+
+    return sumOfHeightsBeforeCycle + leftOverSum + (noOfCycles * sumOfHeightsPerCycle);
   }
 }
