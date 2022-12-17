@@ -94,6 +94,8 @@ const solvers: Day[][] = [
     new Day15Part2(),
   ],
   [
+  ],
+  [
     new Day17Part1(),
     new Day17Part2(),
   ],
