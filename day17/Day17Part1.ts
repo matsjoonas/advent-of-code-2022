@@ -110,7 +110,7 @@ export default class Day17Part1 implements Day {
       console.log('                 ');
       */
     }
-    
+
     return highestY;
   }
 }
