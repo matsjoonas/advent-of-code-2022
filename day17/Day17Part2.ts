@@ -3,13 +3,14 @@ import ShapeGenerator from "./ShapeGenerator";
 import collides from "./collides";
 import translateShape from "./translateShape";
 import shapeToString from "./shapeToString";
+import shapeToMap from "./shapeToMap";
 import renderShape from "./renderShape";
 
 export default class Day17Part2 implements Day {
   public solve(rawInput: string): number {
     const jetPattern = rawInput.trim().split('');
     // Store large shape points as strings for faster processing
-    let floorShape = shapeToString([
+    let floorShape = shapeToMap([
       [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0]
     ]);
     let highestY = 0;
@@ -27,12 +28,12 @@ export default class Day17Part2 implements Day {
         } else if (jet === '>') {
           xMovedRock = translateShape(rock, 1, 0);
         }
-        if (collides(shapeToString(xMovedRock), floorShape)) {
+        if (collides(shapeToMap(xMovedRock), floorShape)) {
           // undo the movement in case of collision
           xMovedRock = [...rock];
         }
         let yMovedRock = translateShape(xMovedRock, 0, -1);
-        if (collides(shapeToString(yMovedRock), floorShape)) {
+        if (collides(shapeToMap(yMovedRock), floorShape)) {
           // undo the movement in case of collision
           rock = xMovedRock;
           break;
@@ -40,7 +41,7 @@ export default class Day17Part2 implements Day {
         rock = yMovedRock;
       }
 
-      floorShape = [...floorShape, ...shapeToString(rock)];
+      floorShape = new Map([...floorShape, ...shapeToMap(rock)]);
       const rockHighestY = rock.sort((a, b) => b[1] - a[1])[0][1];
       highestY = highestY > rockHighestY ? highestY : rockHighestY;
       // find the new floor
