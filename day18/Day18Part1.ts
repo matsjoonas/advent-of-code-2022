@@ -45,7 +45,6 @@ export default class Day18Part1 implements Day {
       surfaceArea += freedAdjSpots.length;
     });
 
-    console.log(surfaceArea);
-    return 0;
+    return surfaceArea;
   }
 }
