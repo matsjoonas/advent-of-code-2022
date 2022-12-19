@@ -26,13 +26,11 @@ function maxGeodes(blueprint: number[][]) {
   const seen = new Map();
 
   let maxGeodes = 0;
+  const maxGeodesForTime = [];
 
   let i = 0;
   while (true) {
     i++;
-    if (i % 100000 === 0) {
-      console.log(i, maxGeodes);
-    }
     const thisState = queue.pop();
     if (!thisState) {
       break;
@@ -43,6 +41,20 @@ function maxGeodes(blueprint: number[][]) {
     }
 
     if (thisState.timeLeft <= 0) {
+      continue;
+    }
+
+    let rg: number = maxGeodesForTime[thisState.timeLeft];
+    if (rg === undefined) {
+      rg = 0;
+      for (let m = 1; m <= thisState.timeLeft; m++) {
+        rg += m * (thisState.timeLeft - m);
+      }
+      maxGeodesForTime[thisState.timeLeft] = rg;
+    }
+
+    const theoreticalMax = thisState.robots[3] * thisState.timeLeft + thisState.materials[3] + rg;
+    if (theoreticalMax <= maxGeodes) {
       continue;
     }
 
