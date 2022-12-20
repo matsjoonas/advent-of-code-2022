@@ -7,7 +7,7 @@ export default class Day20Part1 implements Day {
 
     const original = input.map((value, index) => [value, index]);
     const workingArray = [...original];
-    //console.log(workingArray);
+
     original.forEach(item => {
       const currentIndex = workingArray.findIndex(workingItem => workingItem[0] === item[0] && workingItem[1] === item[1]);
       let newIndex = currentIndex + workingArray[currentIndex][0];
@@ -20,11 +20,6 @@ export default class Day20Part1 implements Day {
     const iA = (i0 + 1000) % workingArray.length;
     const iB = (i0 + 2000) % workingArray.length;
     const iC = (i0 + 3000) % workingArray.length;
-
-    console.log(workingArray[iA]);
-    console.log(workingArray[iB]);
-    console.log(workingArray[iC]);
-
 
     return workingArray[iA][0] + workingArray[iB][0] + workingArray[iC][0];
   }
