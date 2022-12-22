@@ -1,10 +1,33 @@
 import Day from "../Day";
+import Logger from "../util/Logger";
 
 export default class Day22Part2 implements Day {
   public solve(rawInput: string): number {
+    const logger = new Logger();
+    // logger.turnOff();
     const input = rawInput.split(/\r\n\r\n|\n\n/);
     const map = input[0].split(/\r\n|\n/)
       .map(item => item.split('').map(tile => tile === ' ' ? undefined : tile));
+
+    const sideLength = map.length / 3;
+    function getSide(point: number[]) {
+      const sides: {} = {
+        'x3y1': 1,
+        'x1y2': 2,
+        'x2y2': 3,
+        'x3y2': 4,
+        'x3y3': 5,
+        'x4y3': 6,
+      };
+      const xSection = Math.floor(point[1] / sideLength) + 1;
+      const ySection = Math.floor(point[0] / sideLength) + 1;
+      // @ts-ignore
+      const side = sides['x' + xSection + 'y' + ySection];
+      if (side === undefined) {
+        throw new Error('INVALID SIDE');
+      }
+      return side;
+    }
 
     const instructions = input[1].trim()
       .replaceAll('L', '|L|')
@@ -41,7 +64,7 @@ export default class Day22Part2 implements Day {
     const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
     let directionIndex = 0;
     instructions.forEach(instruction => {
-      //console.log('instruction', instruction);
+      logger.log(`--------- INSTRUCTION: ${instruction} ------------`);
       if (instruction === 'L') {
         directionIndex--;
         if (directionIndex < 0) {
@@ -55,13 +78,14 @@ export default class Day22Part2 implements Day {
       } else {
         const currentDirection = directions[directionIndex];
         for (let step = 0; step < Number(instruction); step++) {
-          //console.log('------------------');
+          logger.log(`------- STEP: ${step} ----------`);
+          logger.log('direction: ', currentDirection);
           let nextPos = [playerPosition[0] + currentDirection[0], playerPosition[1] + currentDirection[1]];
-          //console.log('nextPos', nextPos);
+          logger.log('nextPos:', nextPos);
           const xLimit = xLimits[playerPosition[0]];
           const yLimit = yLimits[playerPosition[1]];
-          //console.log('xLimit', xLimit);
-          //console.log('yLimit', yLimit);
+          logger.log('xLimit:', xLimit);
+          logger.log('yLimit:', yLimit);
 
           if (nextPos[1] > xLimit[1]) {
             nextPos[1] = xLimit[0];
@@ -75,9 +99,9 @@ export default class Day22Part2 implements Day {
             nextPos[0] = yLimit[1];
           }
 
-          //console.log(nextPos[0], nextPos[1]);
+          logger.log('corrected nextPos:', nextPos);
           let nextTile = map[nextPos[0]][nextPos[1]];
-          //console.log('nextTile', nextTile);
+          logger.log('nextTile:', nextTile);
           if (nextTile === '#') {
             // blocked, no point in trying to move in this direction
             break;
