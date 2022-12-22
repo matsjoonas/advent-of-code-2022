@@ -5,12 +5,13 @@ import rotateClockwise from "../util/rotateClockwise";
 export default class Day22Part2 implements Day {
   public solve(rawInput: string): number {
     const logger = new Logger();
-    logger.turnOff();
+    // logger.turnOff();
     const input = rawInput.split(/\r\n\r\n|\n\n/);
     const map = input[0].split(/\r\n|\n/)
       .map(item => item.split('').map(tile => tile === ' ' ? undefined : tile));
 
-    const sideLength = map.length / 4;
+    logger.log(map[map.length - 1]);
+    const sideLength = map.length / 3;
     const soloSides: number[][][][] = [];
     for (let y = 0; y < map.length; y++) {
       for (let x = 0; x < map[y].length; x++) {
@@ -34,12 +35,12 @@ export default class Day22Part2 implements Day {
 
     function getSide(point: number[]) {
       const sides: {} = {
-        'x2y1': 1,
-        'x3y1': 2,
+        'x3y1': 1,
+        'x1y2': 2,
         'x2y2': 3,
-        'x1y3': 4,
-        'x2y3': 5,
-        'x1y4': 6,
+        'x3y2': 4,
+        'x3y3': 5,
+        'x4y3': 6,
       };
       const xSection = Math.floor(point[1] / sideLength) + 1;
       const ySection = Math.floor(point[0] / sideLength) + 1;
@@ -70,7 +71,7 @@ export default class Day22Part2 implements Day {
     });
 
     let yLimits: number[][] = [];
-    for (let x = 0; x < map[0].length; x++) {
+    for (let x = 0; x < map[map.length - 1].length; x++) {
       let start = -1;
       let end = -1;
       for (let y = 0; y < map.length; y++) {
@@ -117,95 +118,85 @@ export default class Day22Part2 implements Day {
           logger.log('yLimit:', yLimit);
 
           const currentSide = getSide(playerPosition);
-          logger.log('currentSide', currentSide);
-          logger.log('playerPosition', playerPosition);
-          let updatedPosition = [...nextPos];
-          // > 0, v 1, < 2, ^ 3
           if (nextPos[1] > xLimit[1]) {
             let targetSide = soloSides[6];
-            if (currentSide === 2) {
-              targetSide = rotateClockwise(soloSides[5], 2);
+            if (currentSide === 1) {
+              targetSide = rotateClockwise(soloSides[6], 2);
               newDirectionIndex = 2;
-            } else if (currentSide === 3) {
-              targetSide = rotateClockwise(soloSides[2], 1);
-              newDirectionIndex = 3;
-            } else if (currentSide === 5) {
-              targetSide = rotateClockwise(soloSides[2], 2);
-              newDirectionIndex = 2;
+            } else if (currentSide === 4) {
+              targetSide = rotateClockwise(soloSides[6], 3);
+              newDirectionIndex = 1;
             } else if (currentSide === 6) {
-              targetSide = rotateClockwise(soloSides[5], 1);
-              newDirectionIndex = 3;
+              targetSide = rotateClockwise(soloSides[1], 2);
+              newDirectionIndex = 2;
             } else {
               throw new Error('Going in over the edge in > direction on other sides is not possible');
             }
-            updatedPosition = [...targetSide[playerPosition[0] % sideLength][0]];
+            nextPos = [...targetSide[playerPosition[0] % sideLength][0]];
           } else if (nextPos[1] < xLimit[0]) {
-            // > 0, v 1, < 2, ^ 3
             let targetSide = soloSides[1];
             if (currentSide === 1) {
-              targetSide = rotateClockwise(soloSides[4], 2);
-              newDirectionIndex = 0;
-            } else if (currentSide === 3) {
-              targetSide = rotateClockwise(soloSides[4], 1);
+              targetSide = rotateClockwise(soloSides[3]);
               newDirectionIndex = 1;
-            } else if (currentSide === 4) {
-              targetSide = rotateClockwise(soloSides[1], 2);
-              newDirectionIndex = 0;
-            } else if (currentSide === 6) {
-              targetSide = rotateClockwise(soloSides[1], 1);
-              newDirectionIndex = 1;
+            } else if (currentSide === 2) {
+              targetSide = rotateClockwise(soloSides[6], 3);
+              newDirectionIndex = 3;
+            } else if (currentSide === 5) {
+              targetSide = rotateClockwise(soloSides[3], 3);
+              newDirectionIndex = 3;
             } else {
               throw new Error('Going over the edge in < direction on other sides is not possible');
             }
-            updatedPosition = [...targetSide[playerPosition[0] % sideLength][targetSide[0].length - 1]];
+            nextPos = [...targetSide[playerPosition[0] % sideLength][targetSide[0].length - 1]];
           }
           // > 0, v 1, < 2, ^ 3
           if (nextPos[0] > yLimit[1]) {
             let targetSide = soloSides[6];
-            if (currentSide === 6) {
-              targetSide = soloSides[2];
-              newDirectionIndex = 1;
+            if (currentSide === 2) {
+              targetSide = rotateClockwise(soloSides[5], 2);
+              newDirectionIndex = 3;
+            } else if (currentSide === 3) {
+              targetSide = rotateClockwise(soloSides[5]);
+              newDirectionIndex = 0;
             } else if (currentSide === 5) {
-              targetSide = rotateClockwise(soloSides[6], 3);
-              newDirectionIndex = 2;
-            } else if (currentSide === 2) {
-              targetSide = rotateClockwise(soloSides[3], 3);
-              newDirectionIndex = 2;
+              targetSide = rotateClockwise(soloSides[2], 2);
+              newDirectionIndex = 3;
+            } else if (currentSide === 6) {
+              targetSide = rotateClockwise(soloSides[2]);
+              newDirectionIndex = 0;
             } else {
               throw new Error('Going in over the edge in v direction on other sides is not possible');
             }
-            updatedPosition = [...targetSide[0][playerPosition[1] % sideLength]];
+            nextPos = [...targetSide[0][playerPosition[1] % sideLength]];
           } else if (nextPos[0] < yLimit[0]) {
-            // > 0, v 1, < 2, ^ 3
             let targetSide = soloSides[6];
-            if (currentSide === 4) {
-              targetSide = rotateClockwise(soloSides[3], 3);
+            if (currentSide === 2) {
+              targetSide = rotateClockwise(soloSides[1], 2);
+              newDirectionIndex = 1;
+            } else if (currentSide === 3) {
+              targetSide = rotateClockwise(soloSides[1], 3);
               newDirectionIndex = 0;
             } else if (currentSide === 1) {
-              targetSide = rotateClockwise(soloSides[6], 3);
-              newDirectionIndex = 0;
-            } else if (currentSide === 2) {
-              targetSide = soloSides[6];
-              newDirectionIndex = 3;
+              targetSide = rotateClockwise(soloSides[2], 2);
+              newDirectionIndex = 1;
+            } else if (currentSide === 6) {
+              targetSide = rotateClockwise(soloSides[4]);
+              newDirectionIndex = 2;
             } else {
-              logger.log('nextPos[0]', nextPos[0]);
-              logger.log('yLimit[0]', yLimit[0]);
-              logger.log('currentSide', currentSide);
-              logger.log('playerPosition', playerPosition);
               throw new Error('Going in over the edge in ^ direction on other sides is not possible');
             }
-            updatedPosition = [...targetSide[targetSide.length - 1][playerPosition[1] % sideLength]];
+            nextPos = [...targetSide[targetSide.length - 1][playerPosition[1] % sideLength]];
           }
 
-          logger.log('updatedPosition:', updatedPosition);
+          logger.log('corrected nextPos:', nextPos);
           logger.log('newDirection', directions[newDirectionIndex]);
-          let nextTile = map[updatedPosition[0]][updatedPosition[1]];
+          let nextTile = map[nextPos[0]][nextPos[1]];
           logger.log('nextTile:', nextTile);
           if (nextTile === '#') {
             // blocked, no point in trying to move in this direction
             break;
           }
-          playerPosition = [...updatedPosition];
+          playerPosition = [...nextPos];
           directionIndex = newDirectionIndex;
         }
       }
