@@ -87,8 +87,6 @@ export default class Day22Part1 implements Day {
       }
     });
 
-    console.log(playerPosition);
-
     return 1000 * (playerPosition[0] + 1) + 4 * (playerPosition[1] + 1) + directionIndex;
   }
 }
