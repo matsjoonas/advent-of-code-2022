@@ -10,6 +10,27 @@ export default class Day22Part2 implements Day {
       .map(item => item.split('').map(tile => tile === ' ' ? undefined : tile));
 
     const sideLength = map.length / 3;
+    const soloSides: number[][][][] = [];
+    for (let y = 0; y < map.length; y++) {
+      for (let x = 0; x < map[y].length; x++) {
+        if (map[y][x] !== undefined) {
+          const side = getSide([y, x]);
+          if (!soloSides[side]) {
+            soloSides[side] = [];
+          }
+          const originalCoords = [y, x];
+          const localY = y % sideLength;
+          const localX = x % sideLength;
+
+          if (!soloSides[side][localY]) {
+            soloSides[side][localY] = [];
+          }
+          soloSides[side][localY][localX] = originalCoords;
+        }
+      }
+    }
+
+
     function getSide(point: number[]) {
       const sides: {} = {
         'x3y1': 1,
@@ -61,7 +82,7 @@ export default class Day22Part2 implements Day {
 
     let playerPosition = [0, map[0].findIndex(tile => tile === '.')];
 
-    const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
+    const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // > 0, v 1, < 2, ^ 3
     let directionIndex = 0;
     instructions.forEach(instruction => {
       logger.log(`--------- INSTRUCTION: ${instruction} ------------`);
@@ -86,6 +107,8 @@ export default class Day22Part2 implements Day {
           const yLimit = yLimits[playerPosition[1]];
           logger.log('xLimit:', xLimit);
           logger.log('yLimit:', yLimit);
+
+          const currentSide = getSide(playerPosition);
 
           if (nextPos[1] > xLimit[1]) {
             nextPos[1] = xLimit[0];
