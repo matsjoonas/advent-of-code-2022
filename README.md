@@ -9,7 +9,7 @@ or if you wish to use current date, then:
 
 To solve a day, run the following command in the root folder of this repo:
 
-`ts-node index.ts --day=1 --part=1`
+`'ts-node index.ts --day=1 --part=1'`
 
 To run a specific test:
 
