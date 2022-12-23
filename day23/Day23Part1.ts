@@ -1,5 +1,6 @@
 import Day from "../Day";
 import Logger from "../util/Logger";
+import frame from "./frame";
 
 const directions = [
   {
@@ -36,42 +37,6 @@ const directions = [
   },
 ];
 
-
-const directionGroups = [
-  {
-    main: [-1, 0], // N
-    members: [
-      [-1, 0], // N
-      [-1, 1], // NE
-      [0, 1], // E
-    ]
-  },
-  {
-    main: [1, 0], // S
-    members: [
-      [1, 1], // SE
-      [1, 0], // S
-      [1, -1], // SW
-    ]
-  },
-  {
-    main: [0, -1], // W
-    members: [
-      [1, -1], // SW
-      [0, -1], // W
-      [-1, -1], // NW
-    ]
-  },
-  {
-    main: [0, 1], // E
-    members: [
-      [-1, 1], // NE
-      [0, 1], // E
-      [1, 1], // SE
-    ]
-  }
-];
-
 function arrToKey(arr: number[]) {
   return arr.join(',');
 }
@@ -84,7 +49,6 @@ export default class Day23Part1 implements Day {
     let byPosition = new Map();
     let elves: number[][] = [];
 
-    logger.log(input);
     input.forEach((row, y) => {
       row.forEach((tile, x) => {
         if (tile === '#') {
@@ -95,65 +59,77 @@ export default class Day23Part1 implements Day {
     });
 
     function round() {
+      logger.log('-------- ROUND ---------');
       const proposedPositions = new Map();
       elves.forEach(elf => {
         let blockedDirs: string[] = [];
+        logger.log('--------- ELF', elf, '------------');
         directions.forEach(direction => {
-          const lookPosition = [elf[0] + direction.d[0], elf[1], direction.d[1]];
+          const lookPosition = [elf[0] + direction.d[0], elf[1] + direction.d[1]];
           if (byPosition.get(lookPosition.join(','))) {
             blockedDirs.push(direction.name);
           }
           if (!blockedDirs) {
             return;
           }
-          let proposedDirection = '';
-          if (!blockedDirs.includes('N') && !blockedDirs.includes('NE') &&  !blockedDirs.includes('NW')) {
-            proposedDirection = 'N';
-          } else if (!blockedDirs.includes('S') && !blockedDirs.includes('SE') &&  !blockedDirs.includes('SW')) {
-            proposedDirection = 'S';
-          } else if (!blockedDirs.includes('W') && !blockedDirs.includes('NW') &&  !blockedDirs.includes('SW')) {
-            proposedDirection = 'E';
-          } else if (!blockedDirs.includes('E') && !blockedDirs.includes('NE') &&  !blockedDirs.includes('SE')) {
-            proposedDirection = 'E';
-          }
-
-          if (!proposedDirection) {
-            // no valid directions
-            return;
-          }
-
-          const chosenDirection = directions.find(direction => direction.name === proposedDirection);
-          if (!chosenDirection) {
-            throw new Error('Could not find a matching direction');
-          }
-          const proposedPos = [elf[0] + chosenDirection.d[0], elf[0] + chosenDirection.d[0]];
-          byPosition.set(arrToKey(elf), proposedPos);
-          const posKey = arrToKey(proposedPos);
-          if (proposedPositions.get(posKey)) {
-            proposedPositions.set(posKey, proposedPositions.get(posKey) + 1);
-          } else {
-            proposedPositions.set(posKey, 1);
-          }
         });
+
+        let proposedDirection = '';
+        if (!blockedDirs.includes('N') && !blockedDirs.includes('NE') &&  !blockedDirs.includes('NW')) {
+          proposedDirection = 'N';
+        } else if (!blockedDirs.includes('S') && !blockedDirs.includes('SE') &&  !blockedDirs.includes('SW')) {
+          proposedDirection = 'S';
+        } else if (!blockedDirs.includes('W') && !blockedDirs.includes('NW') &&  !blockedDirs.includes('SW')) {
+          proposedDirection = 'E';
+        } else if (!blockedDirs.includes('E') && !blockedDirs.includes('NE') &&  !blockedDirs.includes('SE')) {
+          proposedDirection = 'E';
+        }
+
+        if (!proposedDirection) {
+          // no valid directions
+          return;
+        }
+
+        logger.log('proposedDirection', proposedDirection);
+        const chosenDirection = directions.find(direction => direction.name === proposedDirection);
+        if (!chosenDirection) {
+          throw new Error('Could not find a matching direction');
+        }
+        const proposedPos = [elf[0] + chosenDirection.d[0], elf[1] + chosenDirection.d[1]];
+        logger.log('proposedPos', proposedPos);
+        byPosition.set(arrToKey(elf), proposedPos);
+        const posKey = arrToKey(proposedPos);
+        if (proposedPositions.get(posKey)) {
+          proposedPositions.set(posKey, proposedPositions.get(posKey) + 1);
+        } else {
+          proposedPositions.set(posKey, 1);
+        }
+
+        logger.log('blockedDirs', blockedDirs);
+
       });
 
-      elves.map(elf => {
+      const newElves = elves.map(elf => {
         const elfKey = arrToKey(elf);
         const proposedPos = byPosition.get(elfKey);
         const count = proposedPositions.get(arrToKey(proposedPos));
+        logger.log(proposedPositions);
         if (count === 1) {
           return [...proposedPos];
         } else {
           return [...elf];
         }
       });
+
+      elves = [...newElves];
     }
 
     let counter = 0;
-    console.log(elves);
-    while (counter < 3) {
+    //console.log(elves);
+    while (counter < 1) {
       round();
-      console.log(elves);
+      console.log(frame(elves).map(row => row.join('')).join('\r\n'));
+      console.log('---------')
       counter++;
     }
 
