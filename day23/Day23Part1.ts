@@ -130,8 +130,6 @@ export default class Day23Part1 implements Day {
     //console.log(elves);
     while (counter < 10) {
       round();
-      console.log('-------- AFTER ROUND', counter, ' ----------');
-      console.log(frame(elves).map(row => row.join('')).join('\r\n'));
       counter++;
     }
 
