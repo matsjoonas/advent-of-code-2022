@@ -1,6 +1,7 @@
 import Day from "../Day";
 import Logger from "../util/Logger";
 import frame from "./frame";
+import HiveMind from "./HiveMind";
 
 const directions = [
   {
@@ -44,22 +45,26 @@ function arrToKey(arr: number[]) {
 export default class Day23Part1 implements Day {
   public solve(rawInput: string): number {
     const logger = new Logger();
+    logger.turnOff();
     const input = rawInput.trim().split(/\r\n|\n/).map(line => line.split(''));
+    const hiveMind = new HiveMind();
 
-    let byPosition = new Map();
     let elves: number[][] = [];
 
     input.forEach((row, y) => {
       row.forEach((tile, x) => {
         if (tile === '#') {
-          byPosition.set([y,x].join(','), null);
           elves.push([y,x]);
         }
       });
     });
-
     function round() {
+      let byPosition = new Map();
+      elves.forEach(([y,x]) => {
+        byPosition.set([y,x].join(','), true);
+      });
       logger.log('-------- ROUND ---------');
+      logger.log('byPosition', byPosition);
       const proposedPositions = new Map();
       elves.forEach(elf => {
         let blockedDirs: string[] = [];
@@ -69,21 +74,14 @@ export default class Day23Part1 implements Day {
           if (byPosition.get(lookPosition.join(','))) {
             blockedDirs.push(direction.name);
           }
-          if (!blockedDirs) {
-            return;
-          }
         });
 
-        let proposedDirection = '';
-        if (!blockedDirs.includes('N') && !blockedDirs.includes('NE') &&  !blockedDirs.includes('NW')) {
-          proposedDirection = 'N';
-        } else if (!blockedDirs.includes('S') && !blockedDirs.includes('SE') &&  !blockedDirs.includes('SW')) {
-          proposedDirection = 'S';
-        } else if (!blockedDirs.includes('W') && !blockedDirs.includes('NW') &&  !blockedDirs.includes('SW')) {
-          proposedDirection = 'E';
-        } else if (!blockedDirs.includes('E') && !blockedDirs.includes('NE') &&  !blockedDirs.includes('SE')) {
-          proposedDirection = 'E';
+        // no other elves nearby, do nothing
+        if (blockedDirs.length === 0) {
+          return;
         }
+
+        let proposedDirection = hiveMind.proposeDirection(blockedDirs);
 
         if (!proposedDirection) {
           // no valid directions
@@ -109,11 +107,14 @@ export default class Day23Part1 implements Day {
 
       });
 
+      logger.log('proposedPositions', proposedPositions);
       const newElves = elves.map(elf => {
         const elfKey = arrToKey(elf);
         const proposedPos = byPosition.get(elfKey);
+        if (!Array.isArray(proposedPos)) {
+          return [...elf];
+        }
         const count = proposedPositions.get(arrToKey(proposedPos));
-        logger.log(proposedPositions);
         if (count === 1) {
           return [...proposedPos];
         } else {
@@ -122,19 +123,28 @@ export default class Day23Part1 implements Day {
       });
 
       elves = [...newElves];
+      hiveMind.increment();
     }
 
     let counter = 0;
     //console.log(elves);
-    while (counter < 1) {
+    while (counter < 10) {
       round();
+      console.log('-------- AFTER ROUND', counter, ' ----------');
       console.log(frame(elves).map(row => row.join('')).join('\r\n'));
-      console.log('---------')
       counter++;
     }
 
+    let count = 0;
+    frame(elves).forEach(row => {
+      row.forEach(tile => {
+        if (tile === '.') {
+          count++;
+        }
+      });
+    });
 
 
-    return 0;
+    return count;
   }
 }
