@@ -1,8 +1,8 @@
 export default function frame(points: number[][], marker = '#', emptyTile = '.') {
-  let lowX: number = 9999999999999999999;
-  let highX: number = -9999999999999999999;
-  let lowY: number = 9999999999999999999;
-  let highY: number = -9999999999999999999;
+  let lowX: number = Infinity;
+  let highX: number = -Infinity;
+  let lowY: number = Infinity;
+  let highY: number = -Infinity;
   points.forEach(point => {
     const y = point[0];
     const x = point[1];
