@@ -24,6 +24,7 @@ export default class Day24Part1 implements Day {
 
     logger.log(render(startingBlizPositions, new Set(['0,1']), input[0].length, input.length));
 
+    // this cache is actually not needed, didn't have time to refactor
     const blizCacheByStep = [
       startingBlizPositions,
     ];
