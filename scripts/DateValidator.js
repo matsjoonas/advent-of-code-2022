@@ -7,7 +7,7 @@ class DateValidator {
   }
 
   isValidDay(day) {
-    return day >= 1 && day <= 24;
+    return day >= 1 && day <= 25;
   }
 
   isValidYear(year) {
@@ -28,7 +28,7 @@ class DateValidator {
 
     if (!this.isValidMonth(userProvidedDate.getMonth()) || !this.isValidDay(userProvidedDate.getDate())) {
       validationResult.pass = false;
-      validationResult.message = 'Date must fall between December 1-24';
+      validationResult.message = 'Date must fall between December 1-25';
       return validationResult;
     }
 
