@@ -3,6 +3,13 @@ import nextPosition from "./nextPosition";
 import Logger from "../util/Logger";
 import {BlizPos} from "./BlizPos";
 import render from "./render";
+import {clearInterval} from "timers";
+
+function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 export default class Day24Part2 implements Day {
   public solve(rawInput: string): number {
@@ -31,8 +38,8 @@ export default class Day24Part2 implements Day {
 
     const exit = [input.length - 1, input[0].length - 2].join(',');
     const waySegments = [['0,1', exit], [exit, '0,1'], ['0,1', exit]];
+    let snapshots: string[] = [];
     let step = 1;
-
     waySegments.forEach(segment => {
       let playerPositions = new Set([segment[0]])
       let target = segment[1].split(',').map(Number);
@@ -74,11 +81,27 @@ export default class Day24Part2 implements Day {
         });
         playerPositions = new Set([...nextPlayerPositions.map(pos => pos.join(','))]);
         logger.log('next player positions', playerPositions);
-        logger.log(render(blizCacheByStep[step], playerPositions, input[0].length, input.length));
-
+        snapshots.push(render(blizCacheByStep[step], playerPositions, input[0].length, input.length));
         step++;
       }
     });
+
+    /*
+    // comment out to visualize on terminal
+    let index = 0;
+    let interval = setInterval(() => {
+      if (index >= snapshots.length) {
+        clearInterval(interval);
+        return;
+      }
+      console.clear();
+      console.log('');
+      console.log('------ STEP:', index, '------');
+      console.log('');
+      console.log(snapshots[index]);
+      index++;
+    }, 40);
+     */
 
     return step - 1;
   }
