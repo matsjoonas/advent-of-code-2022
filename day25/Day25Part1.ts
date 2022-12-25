@@ -14,12 +14,22 @@ function snafuToBase10(snafuString: string) {
 }
 
 function base10ToSnafu(base10: number) {
-  console.log(base10.toString(5));
-  return parseInt(base10.toString(), 5);
+  const base5Arr = [...base10.toString(5).split('')];
+
+  for (let i = base5Arr.length - 1; i >= 0; i--) {
+    if (base5Arr[i] === '3') {
+      base5Arr[i] = '=';
+      base5Arr[i - 1] = (Number(base5Arr[i - 1]) + 1).toString();
+    } else if (base5Arr[i] === '4') {
+      base5Arr[i] = '-';
+      base5Arr[i - 1] = (Number(base5Arr[i - 1]) + 1).toString();
+    }
+  }
+  return base5Arr.join('');
 }
 
 export default class Day25Part1 implements Day {
-  public solve(rawInput: string): number {
+  public solve(rawInput: string): string {
     const input = rawInput.trim().split(/\r\n|\n/);
 
     const result = input.reduce((acc, cur) => acc + snafuToBase10(cur), 0);
